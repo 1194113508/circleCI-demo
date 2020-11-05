@@ -2,7 +2,18 @@ version: 2.1
 jobs:
   build:
     docker: 
-      - image: cimg/node:10 # the primary container, where your job's commands are run
+      - image: circleci/node:10 # the primary container, where your job's commands are run
+    branches:
+      only:
+      - master
     steps:
-      - run: echo "hello world" # run the `echo` command
-      - run: npm -v # run the `echo` command
+      - add_ssh_keys:
+        fingerprints:
+          - "94:04:70:46:05:2d:7a:9f:d1:43:68:c1:a6:76:3a:44"
+      - checkout
+      - run:
+          name: Install
+          command: yarn install
+      - run:
+          name: Build
+          command: yarn build
